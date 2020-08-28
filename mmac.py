@@ -21,8 +21,8 @@ manipulator = MMPlanarManipulator2DOF(Tp)
 
 
 # TODO: Switch to MMAC as soon as you implement it
-#controller = MMAController(Tp)
-controller = DummyController(Tp)
+controller = MMAController(Tp)
+#controller = DummyController(Tp)
 
 """
 Here you have some trajectory generators. You can use them to check your implementations.
@@ -42,7 +42,7 @@ def system(x, t):
     q_d, q_d_dot, q_d_ddot = traj_gen.generate(t)
     Q_d.append(q_d)
     print(q_d_ddot)
-    control = controller.calculate_control(x, q_d_ddot[:, np.newaxis])
+    control = controller.calculate_control(x, q_d[:, np.newaxis], q_d_dot[:, np.newaxis], q_d_ddot[:, np.newaxis])
     ctrl.append(control)
     x_dot = manipulator.x_dot(x, control)
     controller.choose_model(x, control, x_dot)

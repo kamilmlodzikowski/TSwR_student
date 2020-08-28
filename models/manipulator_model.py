@@ -22,12 +22,28 @@ class ManiuplatorModel:
         (2DoF planar manipulator with the object at the tip)
         """
         q1, q2, q1_dot, q2_dot = x
-        return NotImplementedError()
+
+        Arr = np.array([[0, 0], [0, 0]], float)
+        Arr[1][1] = self.I_2 + self.m2 * (self.l2 / 2.) ** 2 + self.I_3 + self.m3 * self.l2 ** 2
+        Arr[1][0] = self.I_2 + self.m2 * (self.l2 / 2.) ** 2 + self.I_3 + self.m3 * self.l2 ** 2 + self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.cos(q2)
+        Arr[0][1] = self.I_2 + self.m2 * (self.l2 / 2.) ** 2 + self.I_3 + self.m3 * self.l2 ** 2 + self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.cos(q2)
+        Arr[0][0] = self.I_1 + self.I_2 + self.m1 * (self.l1 / 2.) ** 2 + self.m2 * (self.l1 ** 2 + (self.l2 / 2.) ** 2) + self.I_3 + self.m3 * (self.l1 ** 2 + self.l2 ** 2) + 2 * self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.cos(q2)
+
+        return Arr
+        #return NotImplementedError()
 
     def C(self, x):
         """
         Please implement the calculation of the Coriolis and centrifugal forces matrix, according to the model derived
         in the exercise (2DoF planar manipulator with the object at the tip)
         """
+
         q1, q2, q1_dot, q2_dot = x
-        return NotImplementedError()
+        Arr = np.array([[0, 0], [0, 0]], float)
+        Arr[1][1] = 0
+        Arr[1][0] = self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.sin(q2) * q1_dot
+        Arr[0][1] = -self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.sin(q2) * (q1_dot + q2_dot)
+        Arr[0][0] = -self.m2 * self.l1 * self.l2 / 2. + self.m3 * self.l1 * self.l2 * np.sin(q2) * q2_dot
+
+        return Arr
+        #return NotImplementedError()
