@@ -6,7 +6,7 @@ class MMAController(Controller):
     def __init__(self, Tp):
         # TODO: Fill the list self.models with 3 models of 2DOF manipulators with different m3 and r3
         # Use parameters from manipulators/mm_planar_2dof.py
-        self.models = [ManiuplatorModel(Tp, 0.2, 0.2), ManiuplatorModel(Tp, 0.2, 0.2), ManiuplatorModel(Tp, 0.2, 0.2)]
+        self.models = [ManiuplatorModel(Tp, 0.09, 0.05), ManiuplatorModel(Tp, 0.009, 0.01), ManiuplatorModel(Tp, 1, 0.3)]
         self.i = 0
         self.kd = np.diag((1, 1)) * [1, -1]
         self.kp = np.diag((1, 1)) * [-1, 1]
@@ -16,12 +16,24 @@ class MMAController(Controller):
         max = 0
         for i, mdl in enumerate(self.models):
             x_m = self.calc_x_m(mdl, x, u)
-            y = abs(x_m - x_dot)
+            y = abs(x_m-x_dot)
             y2 = np.sum(y)
             if y2 < min:
                 max = i
                 worst = y2
         self.i = max
+
+
+    def calc_x_m(self, mdl, x , u):
+        inv_M = np.linalg.inv(mdl.M(x))
+        zeros = np.zeros((2, 2), dtype=np.float32)
+
+        A = np.concatenate([np.concatenate([zeros, np.eye(2)], 1),
+                            np.concatenate([zeros, -inv_M @ mdl.C(x)], 1)], 0)
+        b = np.concatenate([zeros, inv_M], 0)
+        x_m = A @ x[:, np.newaxis] + b @ u
+        return x_m
+
 
     def calculate_control(self, x, q_d, q_d_dot, q_dd_dot):
         q0_dot = x[2:].reshape(-1, 1)
