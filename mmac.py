@@ -42,6 +42,7 @@ def system(x, t):
     q_d, q_d_dot, q_d_ddot = traj_gen.generate(t)
     Q_d.append(q_d)
     print(q_d_ddot)
+    # control = controller.calculate_control(x, q_d_ddot[:, np.newaxis])
     control = controller.calculate_control(x, q_d[:, np.newaxis], q_d_dot[:, np.newaxis], q_d_ddot[:, np.newaxis])
     ctrl.append(control)
     x_dot = manipulator.x_dot(x, control)

@@ -6,10 +6,10 @@ class MMAController(Controller):
     def __init__(self, Tp):
         # TODO: Fill the list self.models with 3 models of 2DOF manipulators with different m3 and r3
         # Use parameters from manipulators/mm_planar_2dof.py
-        self.models = [ManiuplatorModel(Tp, 0.09, 0.05), ManiuplatorModel(Tp, 0.009, 0.01), ManiuplatorModel(Tp, 1, 0.3)]
+        self.models = [ManiuplatorModel(Tp, 0.1, 0.05), ManiuplatorModel(Tp, 0.01, 0.01), ManiuplatorModel(Tp, 1.0, 0.3)]
         self.i = 0
-        self.kd = np.diag((1, 1)) * [1, -1]
-        self.kp = np.diag((1, 1)) * [-1, 1]
+        self.kd = np.diag((1, 1)) * [1.5, -1]
+        self.kp = np.diag((1, 1)) * [-1, 2]
     def choose_model(self, x, u, x_dot):
         # TODO: Implement procedure of choosing the best fitting model from self.models (by setting self.i)
         min = 1000000000
