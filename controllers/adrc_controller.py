@@ -12,5 +12,5 @@ class ADRController(Controller):
         q_dot_est = eso_estimates[1]
         f = eso_estimates[2]
         ### TODO: Please implement me
-        u = None
+        u = (q_d_ddot + self.kd * (q_d_dot - q_dot_est) + self.kp * (q_d - q) - f)/self.b
         return u
