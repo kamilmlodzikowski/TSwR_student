@@ -17,9 +17,9 @@ end = 3
 t = np.linspace(start, end, int((end - start) / Tp))
 manipulator = PlanarManipulator2DOF(Tp)
 
-kp1 = 7.5
-kp2 = 7.7
-kd1 = 1.1
+kp1 = 5.0
+kp2 = 6.7
+kd1 = 1.5
 kd2 = 1.3
 fl_controller = PDDecentralizedController(kp1, kd1)
 sl_controller = PDDecentralizedController(kp2, kd2)
