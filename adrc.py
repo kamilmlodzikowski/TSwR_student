@@ -20,17 +20,17 @@ manipulator = PlanarManipulator2DOF(Tp)
 
 b_est_1 = 10.
 b_est_2 = 10.
-kp_1 = 0.
-kp_2 = 0.
-kd_1 = 0.
-kd_2 = 0.
+kp_1 = 16.
+kp_2 = 16.
+kd_1 = 5.5
+kd_2 = 5.5
 fl_controller = ADRController(b_est_1, kp_1, kd_1)
 sl_controller = ADRController(b_est_2, kp_2, kd_2)
 
-l1 = 0.
-l2 = 0.
-l3 = 0.
-A = np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]])  # TODO: Set matrix A also
+l1 = 3*150
+l2 = 3*150**2
+l3 = 150**3
+A = np.array([[0., 1., 0.], [0., 0., 1.], [0., 0., 0.]])  # TODO: Set matrix A also
 B1 = np.array([0., b_est_1, 0.])[:, np.newaxis]
 B2 = np.array([0., b_est_2, 0.])[:, np.newaxis]
 L1 = np.array([l1, l2, l3])[:, np.newaxis]
@@ -53,8 +53,8 @@ def system(x_and_eso, t):
     T.append(t)
     q_d, q_d_dot, q_d_ddot = traj_gen.generate(t)
     Q_d.append(q_d)
-    u1 = fl_controller.calculate_control(x[0], q_d[0], q_d_dot[0], q_d_ddot[0], fl_estimates)
-    u2 = sl_controller.calculate_control(x[1], q_d[1], q_d_dot[1], q_d_ddot[1], sl_estimates)
+    u1 = 1.2  # fl_controller.calculate_control(x[0], q_d[0], q_d_dot[0], q_d_ddot[0], fl_estimates)
+    u2 = 1.5  # sl_controller.calculate_control(x[1], q_d[1], q_d_dot[1], q_d_ddot[1], sl_estimates)
     control = np.stack([u1, u2])[:, np.newaxis]
     ctrl.append(control)
     fl_eso_dot = first_link_state_estimator.compute_dot(fl_estimates, x[0], u1)
