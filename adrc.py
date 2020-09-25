@@ -53,8 +53,10 @@ def system(x_and_eso, t):
     T.append(t)
     q_d, q_d_dot, q_d_ddot = traj_gen.generate(t)
     Q_d.append(q_d)
-    u1 = 1.2  # fl_controller.calculate_control(x[0], q_d[0], q_d_dot[0], q_d_ddot[0], fl_estimates)
-    u2 = 1.5  # sl_controller.calculate_control(x[1], q_d[1], q_d_dot[1], q_d_ddot[1], sl_estimates)
+    u1 = fl_controller.calculate_control(x[0], q_d[0], q_d_dot[0], q_d_ddot[0], fl_estimates)
+    # u1 = 1.2
+    u2 = sl_controller.calculate_control(x[1], q_d[1], q_d_dot[1], q_d_ddot[1], sl_estimates)
+    # u2 = 1.5
     control = np.stack([u1, u2])[:, np.newaxis]
     ctrl.append(control)
     fl_eso_dot = first_link_state_estimator.compute_dot(fl_estimates, x[0], u1)

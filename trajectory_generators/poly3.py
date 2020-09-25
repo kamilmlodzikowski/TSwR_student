@@ -23,8 +23,12 @@ class Poly3(TrajectoryGenerator):
         Remember to derive the first and second derivative of it also.
         Use following formula for the polynomial from the instruction.
         """
-        t = t/self.T
-        q = (1 - t)**3 * self.a_3 * t**3 + self.a_2 * t**2 * (1 - t) + self.a_1 * t * (1 - t)**2 + self.a_0
-        q_dot = -self.a_3 * t**2 * 3 * self.a_0 * (1-t)**2 + self.a_1 * (3 * t**2 - 4 * t + 1) + self.a_2 * t * (2 - 3 * t) + 3
-        q_ddot = self.a_3 * t * 6 * self.a_0 * (1 - t) + self.a_1*(-4 + 6*t) + self.a_2 * (2 - 6*t) + 6
+        t /= self.T
+        q = self.a_3 * t**3 + self.a_2 * t**2 * (1 - t) + self.a_1 * t * (1 - t)**2 + self.a_0 * (1 - t)**3
+
+        q_dot = -3 * self.a_0 * (1-t)**2 + self.a_1 * (3 * t**2 - 4 * t + 1) + self.a_2 * t * (2 - 3 * t) + 3 * \
+                self.a_3 * t**2
+        q_ddot = 6 * self.a_0 * (1 - t) + self.a_1*(-4 + 6*t) + self.a_2 * (2 - 6*t) + 6 * self.a_3 * t
+
         return q, q_dot / self.T, q_ddot / self.T**2
+
