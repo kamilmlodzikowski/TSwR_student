@@ -19,9 +19,9 @@ class MMAController(Controller):
             y = abs(x_m-x_dot)
             y2 = np.sum(y)
             if y2 < min:
-                max = i
-                worst = y2
-        self.i = max
+                choose = i
+                min = y2
+        self.i = choose
 
 
     def calc_x_m(self, mdl, x , u):
