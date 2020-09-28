@@ -5,7 +5,7 @@ from .controller import Controller
 
 class FeedbackLinearizationController(Controller):
     def __init__(self, Tp):
-        self.model = ManiuplatorModel(Tp, 0.25, 0.35)
+        self.model = ManiuplatorModel(Tp, 0.21, 0.05)
         self.kd = np.diag((1, 1)) * [2, -1]
         self.kp = np.diag((1, 1)) * [-2, 1.5]
 
